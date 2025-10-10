@@ -179,8 +179,39 @@
 
     <script>
         // Configuration
-        const GEMINI_API_KEY = 'YOUR_GEMINI_API_KEY_HERE'; // Replace with your actual API key
+        let GEMINI_API_KEY = null;
         const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+        // Function to get API key from server or prompt user
+        async function getApiKey() {
+            try {
+                // Try to get API key from server first
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                if (config.geminiApiKey) {
+                    return config.geminiApiKey;
+                }
+            } catch (error) {
+                console.log('Server not available, using fallback method');
+            }
+            
+            // Fallback: check localStorage
+            let apiKey = localStorage.getItem('GEMINI_API_KEY');
+            
+            if (!apiKey) {
+                // Prompt user to enter API key
+                apiKey = prompt('Please enter your Gemini API key:');
+                if (apiKey) {
+                    localStorage.setItem('GEMINI_API_KEY', apiKey);
+                } else {
+                    alert('API key is required to use this application. Please refresh the page and enter your key.');
+                    return null;
+                }
+            }
+            
+            return apiKey;
+        }
 
         // System instruction with resume data
         const SYSTEM_INSTRUCTION = `
@@ -218,7 +249,14 @@ RESPONSE GUIDELINES:
         let conversationHistory = [];
 
         // Initialize
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Load API key first
+            GEMINI_API_KEY = await getApiKey();
+            if (!GEMINI_API_KEY) {
+                console.error('No API key available');
+                return;
+            }
+            
             setupEventListeners();
             adjustTextareaHeight();
         });
