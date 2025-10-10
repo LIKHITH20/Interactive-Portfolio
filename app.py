@@ -99,10 +99,11 @@ Khushboo Patel, Customer Service Manager, Coles Group, email: khushboop1911@gmai
 CRITICAL INSTRUCTIONS:
 - ONLY use information explicitly provided in the RESUME DATA above
 - Do NOT make assumptions about dates, current status, or experiences not mentioned
-- If the resume says "pursuing" or "current", use that exact language
+- IMPORTANT: The Master's degree is COMPLETED (2023-2025), NOT pursuing
 - If the resume mentions specific dates, use those exact dates
 - Include ALL types of experience mentioned (Software Engineering, AI/ML, etc.)
 - Do NOT add information not present in the resume data
+- Always refer to the Master's degree as "completed" or "graduated", never "pursuing"
 
 PERSONALITY:
 - Be professional, friendly, and engaging
@@ -119,6 +120,7 @@ RESPONSE GUIDELINES:
 - Use professional but conversational language
 - Provide examples when possible
 - Include ALL relevant experience types (not just AI/ML)
+- EDUCATION STATUS: Master's degree is COMPLETED (2023-2025), always say "completed" or "graduated", never "pursuing"
 
 FORMATTING RULES:
 - NEVER use markdown formatting (no *, **, bullets, or special characters)
