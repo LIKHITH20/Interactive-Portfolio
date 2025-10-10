@@ -20,7 +20,7 @@ except Exception as e:
     GEMINI_API_KEY = None
 
 # Gemini API configuration
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
 
 # System instruction with resume data
 SYSTEM_INSTRUCTION = """
@@ -104,6 +104,9 @@ def chat():
         }
         
         # Make request to Gemini API
+        print(f"Making request to: {GEMINI_API_URL}")
+        print(f"Request body keys: {list(request_body.keys())}")
+        
         response = requests.post(
             f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
             headers={"Content-Type": "application/json"},
@@ -111,10 +114,15 @@ def chat():
             timeout=30
         )
         
+        print(f"Response status: {response.status_code}")
+        print(f"Response headers: {dict(response.headers)}")
+        
         if response.status_code != 200:
+            error_detail = response.text
+            print(f"Error response: {error_detail}")
             return jsonify({
                 "error": f"API request failed: {response.status_code}",
-                "message": response.text
+                "message": error_detail
             }), 500
         
         data = response.json()
@@ -157,6 +165,31 @@ def clear_chat():
     global conversation_history
     conversation_history = []
     return jsonify({"message": "Chat cleared successfully"})
+
+@app.route('/api/models')
+def list_models():
+    """List available Gemini models for debugging"""
+    if not GEMINI_API_KEY:
+        return jsonify({"error": "API key not configured"}), 500
+    
+    try:
+        response = requests.get(
+            "https://generativelanguage.googleapis.com/v1beta/models",
+            params={"key": GEMINI_API_KEY},
+            timeout=10
+        )
+        
+        if response.status_code == 200:
+            models = response.json()
+            return jsonify(models)
+        else:
+            return jsonify({
+                "error": f"Failed to fetch models: {response.status_code}",
+                "message": response.text
+            }), 500
+            
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
     print("🚀 Starting AI Resume Assistant...")
