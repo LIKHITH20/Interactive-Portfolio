@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Resume Assistant</title>
+    <title>AI-Powered Interactive Resume | Likhith Shivashankar</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/typewriter-effect@latest/dist/core.js"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -18,174 +20,323 @@
                             600: '#2563eb',
                             700: '#1d4ed8',
                             900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed'
                         }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'gradient': 'gradient 15s ease infinite',
                     }
                 }
             }
         }
     </script>
     <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
         .chat-container {
-            height: calc(100vh - 200px);
+            height: calc(100vh - 300px);
         }
+        
         .message-bubble {
-            animation: slideIn 0.3s ease-out;
+            animation: slideIn 0.5s ease-out;
         }
+        
         @keyframes slideIn {
             from {
                 opacity: 0;
-                transform: translateY(10px);
+                transform: translateY(20px) scale(0.95);
             }
             to {
                 opacity: 1;
-                transform: translateY(0);
+                transform: translateY(0) scale(1);
             }
         }
-        .gradient-bg {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        
+        .typing-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        
+        .skill-bar {
+            transition: width 2s ease-in-out;
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
         }
     </style>
 </head>
-<body class="bg-gray-50 min-h-screen">
-    <!-- Header -->
-    <header class="gradient-bg text-white shadow-lg">
-        <div class="container mx-auto px-4 py-6">
+<body class="bg-gray-50 min-h-screen overflow-x-hidden">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 4s;"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                        <i class="fas fa-robot text-xl"></i>
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-robot text-white text-xl"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold">AI Resume Assistant</h1>
-                        <p class="text-blue-100 text-sm">Ask me anything about my qualifications and experience</p>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            AI Resume Assistant
+                        </h1>
+                        <p class="text-sm text-gray-600">Interactive Portfolio by Likhith Shivashankar</p>
                     </div>
                 </div>
-                <div class="hidden md:flex items-center space-x-4">
-                    <div class="flex items-center space-x-2 bg-white bg-opacity-20 px-3 py-1 rounded-full">
-                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                        <span class="text-sm">Online</span>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-6">
+                        <a href="#about" class="text-gray-700 hover:text-blue-600 transition-colors">About</a>
+                        <a href="#experience" class="text-gray-700 hover:text-blue-600 transition-colors">Experience</a>
+                        <a href="#skills" class="text-gray-700 hover:text-blue-600 transition-colors">Skills</a>
+                        <a href="#chat" class="text-gray-700 hover:text-blue-600 transition-colors">Chat</a>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-green-100 px-3 py-1 rounded-full">
+                        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-sm text-green-700 font-medium">AI Online</span>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
+    </nav>
 
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 py-6">
-        <!-- Chat Container -->
-        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
-            <!-- Chat Header -->
-            <div class="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center space-x-3">
-                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-user-tie text-white"></i>
-                        </div>
-                        <div>
-                            <h2 class="text-white font-semibold">Professional Assistant</h2>
-                            <p class="text-blue-100 text-sm">Ready to discuss my background</p>
-                        </div>
-                    </div>
-                    <button id="clearChat" class="text-white hover:text-blue-200 transition-colors">
-                        <i class="fas fa-trash-alt"></i>
+    <!-- Hero Section -->
+    <section class="relative py-20">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        Interactive
+                    </span>
+                    <br>
+                    <span class="text-gray-800">AI Resume</span>
+                </h2>
+                <p class="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
+                    Experience the future of recruitment with my AI-powered interactive resume. 
+                    Ask me anything about my background, skills, and experience!
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                    <button onclick="scrollToChat()" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-comments mr-2"></i>
+                        Start Conversation
+                    </button>
+                    <button onclick="scrollToExperience()" class="border-2 border-gray-300 text-gray-700 px-8 py-4 rounded-xl font-semibold hover:border-blue-500 hover:text-blue-600 transition-all duration-300">
+                        <i class="fas fa-briefcase mr-2"></i>
+                        View Experience
                     </button>
                 </div>
             </div>
+        </div>
+    </section>
 
-            <!-- Messages Container -->
-            <div id="messages" class="chat-container overflow-y-auto p-6 space-y-4">
-                <!-- Welcome Message -->
-                <div class="message-bubble">
-                    <div class="flex items-start space-x-3">
-                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-robot text-primary-600"></i>
-                        </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
-                            <p class="text-gray-800">
-                                Hello! I'm your AI resume assistant. I can answer questions about my professional background, 
-                                skills, experience, and qualifications. Feel free to ask me anything - I'm here to help you 
-                                learn more about my capabilities and achievements.
-                            </p>
-                            <div class="mt-3 flex flex-wrap gap-2">
-                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Ask about my experience</span>
-                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Learn about my skills</span>
-                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Discuss my projects</span>
+    <!-- Quick Stats -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-4 gap-6">
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-graduation-cap text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">2+</h3>
+                    <p class="text-gray-600">Years Experience</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-code text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">15+</h3>
+                    <p class="text-gray-600">Technologies</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-project-diagram text-purple-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">10+</h3>
+                    <p class="text-gray-600">Projects</p>
+                </div>
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                    <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-brain text-pink-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-800">AI/ML</h3>
+                    <p class="text-gray-600">Specialist</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Chat Interface -->
+    <section id="chat" class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Chat with My AI</h2>
+                    <p class="text-xl text-gray-600">Ask me anything about my background, skills, or experience!</p>
+                </div>
+                
+                <!-- Chat Container -->
+                <div class="bg-white rounded-3xl shadow-2xl overflow-hidden">
+                    <!-- Chat Header -->
+                    <div class="gradient-bg px-8 py-6">
+                        <div class="flex items-center justify-between">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-user-tie text-white text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-white text-xl font-semibold">Likhith Shivashankar</h3>
+                                    <p class="text-blue-100">AI-Powered Professional Assistant</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <button id="voiceButton" class="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white/10">
+                                    <i class="fas fa-microphone text-xl"></i>
+                                </button>
+                                <button id="analyticsButton" class="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white/10">
+                                    <i class="fas fa-chart-bar text-xl"></i>
+                                </button>
+                                <button id="clearChat" class="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white/10">
+                                    <i class="fas fa-trash-alt text-xl"></i>
+                                </button>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <!-- Input Area -->
-            <div class="border-t bg-gray-50 p-4">
-                <div class="flex items-end space-x-3">
-                    <div class="flex-1">
-                        <textarea 
-                            id="messageInput" 
-                            placeholder="Ask me about my experience, skills, or any aspect of my professional background..."
-                            class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none transition-all duration-200"
-                            rows="1"
-                        ></textarea>
+                    <!-- Messages Container -->
+                    <div id="messages" class="chat-container overflow-y-auto p-8 space-y-6 bg-gray-50">
+                        <!-- Welcome Message -->
+                        <div class="message-bubble">
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-white"></i>
+                                </div>
+                                <div class="bg-white rounded-2xl rounded-tl-sm px-6 py-4 max-w-3xl shadow-lg">
+                                    <p class="text-gray-800 text-lg">
+                                        Hello! I'm Likhith's AI assistant. I can tell you about his professional background, 
+                                        technical skills, projects, and experience. Feel free to ask me anything!
+                                    </p>
+                                    <div class="mt-4 flex flex-wrap gap-2">
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-blue-200 transition-colors" onclick="askQuestion('Tell me about your experience')">Experience</span>
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors" onclick="askQuestion('What are your technical skills?')">Skills</span>
+                                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-purple-200 transition-colors" onclick="askQuestion('Show me your projects')">Projects</span>
+                                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-pink-200 transition-colors" onclick="askQuestion('Tell me about your education')">Education</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <button 
-                        id="sendButton" 
-                        class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-2xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
-                    >
-                        <i class="fas fa-paper-plane"></i>
-                    </button>
-                </div>
-                <div class="mt-2 text-xs text-gray-500 text-center">
-                    Press Enter to send • Shift+Enter for new line
-                </div>
-            </div>
-        </div>
 
-        <!-- Features Section -->
-        <div class="mt-8 grid md:grid-cols-3 gap-6">
-            <div class="bg-white rounded-xl p-6 shadow-lg">
-                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
-                    <i class="fas fa-brain text-blue-600 text-xl"></i>
+                    <!-- Input Area -->
+                    <div class="border-t bg-white p-6">
+                        <div class="flex items-end space-x-4">
+                            <div class="flex-1">
+                                <textarea 
+                                    id="messageInput" 
+                                    placeholder="Ask me about Likhith's background, skills, or experience..."
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
+                                    rows="1"
+                                ></textarea>
+                            </div>
+                            <button 
+                                id="sendButton" 
+                                class="bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white px-8 py-3 rounded-2xl transition-all duration-300 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                            >
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        <div class="mt-3 flex items-center justify-between text-sm text-gray-500">
+                            <span>Press Enter to send • Shift+Enter for new line</span>
+                            <span id="responseTime" class="hidden">Response time: <span id="timeValue">0</span>s</span>
+                        </div>
+                    </div>
                 </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Intelligent Responses</h3>
-                <p class="text-gray-600 text-sm">I provide detailed, context-aware answers based on my complete professional background.</p>
-            </div>
-            <div class="bg-white rounded-xl p-6 shadow-lg">
-                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
-                    <i class="fas fa-shield-alt text-green-600 text-xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Accurate Information</h3>
-                <p class="text-gray-600 text-sm">All responses are based solely on my resume data - no hallucinations or external information.</p>
-            </div>
-            <div class="bg-white rounded-xl p-6 shadow-lg">
-                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
-                    <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-gray-800 mb-2">Mobile Friendly</h3>
-                <p class="text-gray-600 text-sm">Fully responsive design that works perfectly on all devices and screen sizes.</p>
             </div>
         </div>
-    </main>
+    </section>
+
+    <!-- Analytics Modal -->
+    <div id="analyticsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 max-w-2xl w-full mx-4">
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-bold text-gray-800">Conversation Analytics</h3>
+                <button onclick="closeAnalytics()" class="text-gray-500 hover:text-gray-700">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div id="analyticsContent" class="space-y-4">
+                <!-- Analytics content will be loaded here -->
+            </div>
+        </div>
+    </div>
 
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
         <div class="bg-white rounded-2xl p-8 text-center">
-            <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-700 font-medium">Processing your question...</p>
+            <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-700 font-medium">AI is thinking...</p>
         </div>
     </div>
 
     <script>
+        // Global variables
+        let conversationCount = 0;
+        let startTime = Date.now();
+
         // DOM Elements
         const messagesContainer = document.getElementById('messages');
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const clearChatButton = document.getElementById('clearChat');
         const loadingOverlay = document.getElementById('loadingOverlay');
+        const analyticsModal = document.getElementById('analyticsModal');
+        const analyticsContent = document.getElementById('analyticsContent');
+        const responseTime = document.getElementById('responseTime');
+        const timeValue = document.getElementById('timeValue');
 
         // Initialize
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             adjustTextareaHeight();
+            loadAnalytics();
         });
 
         function setupEventListeners() {
@@ -225,7 +376,7 @@
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ message: message })
+                    body: JSON.stringify({ message: message, type: 'text' })
                 });
 
                 const data = await response.json();
@@ -234,8 +385,18 @@
                     throw new Error(data.message || `HTTP error! status: ${response.status}`);
                 }
 
+                // Show response time
+                if (data.response_time) {
+                    timeValue.textContent = data.response_time;
+                    responseTime.classList.remove('hidden');
+                    setTimeout(() => responseTime.classList.add('hidden'), 3000);
+                }
+
                 // Add AI response to UI
                 addMessage(data.response, 'assistant');
+
+                conversationCount++;
+                loadAnalytics();
 
             } catch (error) {
                 console.error('Error:', error);
@@ -261,23 +422,23 @@
             
             if (sender === 'user') {
                 messageDiv.innerHTML = `
-                    <div class="flex items-start space-x-3 justify-end">
-                        <div class="bg-primary-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-3xl">
-                            <p>${content}</p>
+                    <div class="flex items-start space-x-4 justify-end">
+                        <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl rounded-tr-sm px-6 py-4 max-w-3xl shadow-lg">
+                            <p class="text-lg">${content}</p>
                         </div>
-                        <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-user text-white text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-white"></i>
                         </div>
                     </div>
                 `;
             } else {
                 messageDiv.innerHTML = `
-                    <div class="flex items-start space-x-3">
-                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                            <i class="fas fa-robot text-primary-600"></i>
+                    <div class="flex items-start space-x-4">
+                        <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-white"></i>
                         </div>
-                        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
-                            <p class="text-gray-800 whitespace-pre-wrap">${content}</p>
+                        <div class="bg-white rounded-2xl rounded-tl-sm px-6 py-4 max-w-3xl shadow-lg">
+                            <p class="text-gray-800 text-lg whitespace-pre-wrap">${content}</p>
                         </div>
                     </div>
                 `;
@@ -294,25 +455,27 @@
                     
                     messagesContainer.innerHTML = `
                         <div class="message-bubble">
-                            <div class="flex items-start space-x-3">
-                                <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
-                                    <i class="fas fa-robot text-primary-600"></i>
+                            <div class="flex items-start space-x-4">
+                                <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                                    <i class="fas fa-robot text-white"></i>
                                 </div>
-                                <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
-                                    <p class="text-gray-800">
-                                        Hello! I'm your AI resume assistant. I can answer questions about my professional background, 
-                                        skills, experience, and qualifications. Feel free to ask me anything - I'm here to help you 
-                                        learn more about my capabilities and achievements.
+                                <div class="bg-white rounded-2xl rounded-tl-sm px-6 py-4 max-w-3xl shadow-lg">
+                                    <p class="text-gray-800 text-lg">
+                                        Hello! I'm Likhith's AI assistant. I can tell you about his professional background, 
+                                        technical skills, projects, and experience. Feel free to ask me anything!
                                     </p>
-                                    <div class="mt-3 flex flex-wrap gap-2">
-                                        <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Ask about my experience</span>
-                                        <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Learn about my skills</span>
-                                        <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Discuss my projects</span>
+                                    <div class="mt-4 flex flex-wrap gap-2">
+                                        <span class="bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-blue-200 transition-colors" onclick="askQuestion('Tell me about your experience')">Experience</span>
+                                        <span class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-green-200 transition-colors" onclick="askQuestion('What are your technical skills?')">Skills</span>
+                                        <span class="bg-purple-100 text-purple-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-purple-200 transition-colors" onclick="askQuestion('Show me your projects')">Projects</span>
+                                        <span class="bg-pink-100 text-pink-700 px-3 py-1 rounded-full text-sm cursor-pointer hover:bg-pink-200 transition-colors" onclick="askQuestion('Tell me about your education')">Education</span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     `;
+                    conversationCount = 0;
+                    loadAnalytics();
                 } catch (error) {
                     console.error('Error clearing chat:', error);
                 }
@@ -330,6 +493,69 @@
             sendButton.disabled = false;
             sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
         }
+
+        function askQuestion(question) {
+            messageInput.value = question;
+            sendMessage();
+        }
+
+        async function loadAnalytics() {
+            try {
+                const response = await fetch('/api/analytics');
+                const data = await response.json();
+                
+                analyticsContent.innerHTML = `
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="bg-blue-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-blue-800">Total Messages</h4>
+                            <p class="text-2xl font-bold text-blue-600">${data.total_messages}</p>
+                        </div>
+                        <div class="bg-green-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-green-800">Session Duration</h4>
+                            <p class="text-2xl font-bold text-green-600">${Math.round(data.session_duration / 60)}m</p>
+                        </div>
+                        <div class="bg-purple-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-purple-800">Avg Response Time</h4>
+                            <p class="text-2xl font-bold text-purple-600">${data.average_response_time}s</p>
+                        </div>
+                        <div class="bg-pink-50 p-4 rounded-lg">
+                            <h4 class="font-semibold text-pink-800">Topics Discussed</h4>
+                            <p class="text-2xl font-bold text-pink-600">${data.topics_discussed.length}</p>
+                        </div>
+                    </div>
+                    <div class="mt-4">
+                        <h4 class="font-semibold text-gray-800 mb-2">Topics Covered:</h4>
+                        <div class="flex flex-wrap gap-2">
+                            ${data.topics_discussed.map(topic => 
+                                `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">${topic}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading analytics:', error);
+            }
+        }
+
+        function showAnalytics() {
+            analyticsModal.classList.remove('hidden');
+        }
+
+        function closeAnalytics() {
+            analyticsModal.classList.add('hidden');
+        }
+
+        function scrollToChat() {
+            document.getElementById('chat').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function scrollToExperience() {
+            // This would scroll to experience section if it existed
+            scrollToChat();
+        }
+
+        // Event listeners for buttons
+        document.getElementById('analyticsButton').addEventListener('click', showAnalytics);
     </script>
 </body>
 </html>

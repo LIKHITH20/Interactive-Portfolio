@@ -3,6 +3,8 @@ from dotenv import load_dotenv
 import os
 import requests
 import json
+import time
+from datetime import datetime
 
 # Load environment variables from .env file
 load_dotenv()
@@ -127,8 +129,14 @@ FORMATTING RULES:
 - Use "I" statements to make it personal and engaging
 """
 
-# Store conversation history
+# Store conversation history and analytics
 conversation_history = []
+conversation_analytics = {
+    "total_messages": 0,
+    "session_start": datetime.now().isoformat(),
+    "topics_discussed": [],
+    "response_times": []
+}
 
 def clean_markdown_formatting(text):
     """Clean up markdown formatting to make responses more conversational"""
@@ -176,24 +184,32 @@ def get_config():
 
 @app.route('/api/chat', methods=['POST'])
 def chat():
-    """Handle chat messages"""
+    """Handle chat messages with enhanced features"""
     if not GEMINI_API_KEY:
         return jsonify({
             "error": "API key not configured",
             "message": "Please set GEMINI_API_KEY in your .env file"
         }), 500
     
+    start_time = time.time()
+    
     try:
         data = request.get_json()
         user_message = data.get('message', '')
+        message_type = data.get('type', 'text')  # text, voice, etc.
         
         if not user_message:
             return jsonify({"error": "No message provided"}), 400
         
+        # Track analytics
+        conversation_analytics["total_messages"] += 1
+        
         # Add user message to conversation history
         conversation_history.append({
             "role": "user",
-            "parts": [{"text": user_message}]
+            "parts": [{"text": user_message}],
+            "timestamp": datetime.now().isoformat(),
+            "type": message_type
         })
         
         # Prepare request for Gemini API
@@ -212,7 +228,6 @@ def chat():
         
         # Make request to Gemini API
         print(f"Making request to: {GEMINI_API_URL}")
-        print(f"Request body keys: {list(request_body.keys())}")
         
         response = requests.post(
             f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
@@ -221,8 +236,8 @@ def chat():
             timeout=30
         )
         
-        print(f"Response status: {response.status_code}")
-        print(f"Response headers: {dict(response.headers)}")
+        response_time = time.time() - start_time
+        conversation_analytics["response_times"].append(response_time)
         
         if response.status_code != 200:
             error_detail = response.text
@@ -248,10 +263,20 @@ def chat():
         # Add AI response to conversation history
         conversation_history.append({
             "role": "model",
-            "parts": [{"text": ai_response}]
+            "parts": [{"text": ai_response}],
+            "timestamp": datetime.now().isoformat(),
+            "response_time": response_time
         })
         
-        return jsonify({"response": ai_response})
+        # Extract topics for analytics (simple keyword extraction)
+        topics = extract_topics(user_message)
+        conversation_analytics["topics_discussed"].extend(topics)
+        
+        return jsonify({
+            "response": ai_response,
+            "response_time": round(response_time, 2),
+            "message_id": len(conversation_history)
+        })
         
     except requests.exceptions.Timeout:
         return jsonify({
@@ -269,40 +294,61 @@ def chat():
             "message": str(e)
         }), 500
 
+def extract_topics(message):
+    """Extract topics from user message for analytics"""
+    topics = []
+    message_lower = message.lower()
+    
+    topic_keywords = {
+        "education": ["education", "degree", "university", "college", "master", "bachelor"],
+        "experience": ["experience", "work", "job", "career", "role", "position"],
+        "skills": ["skills", "technology", "programming", "coding", "technical"],
+        "projects": ["project", "portfolio", "work", "build", "develop"],
+        "ai_ml": ["ai", "machine learning", "ml", "artificial intelligence", "data science"],
+        "software": ["software", "engineering", "development", "programming"]
+    }
+    
+    for topic, keywords in topic_keywords.items():
+        if any(keyword in message_lower for keyword in keywords):
+            topics.append(topic)
+    
+    return topics
+
 @app.route('/api/clear', methods=['POST'])
 def clear_chat():
     """Clear conversation history"""
     global conversation_history
     conversation_history = []
+    conversation_analytics["total_messages"] = 0
+    conversation_analytics["topics_discussed"] = []
+    conversation_analytics["response_times"] = []
+    conversation_analytics["session_start"] = datetime.now().isoformat()
     return jsonify({"message": "Chat cleared successfully"})
 
-@app.route('/api/models')
-def list_models():
-    """List available Gemini models for debugging"""
-    if not GEMINI_API_KEY:
-        return jsonify({"error": "API key not configured"}), 500
+@app.route('/api/analytics')
+def get_analytics():
+    """Get conversation analytics"""
+    avg_response_time = sum(conversation_analytics["response_times"]) / len(conversation_analytics["response_times"]) if conversation_analytics["response_times"] else 0
     
-    try:
-        response = requests.get(
-            "https://generativelanguage.googleapis.com/v1beta/models",
-            params={"key": GEMINI_API_KEY},
-            timeout=10
-        )
-        
-        if response.status_code == 200:
-            models = response.json()
-            return jsonify(models)
-        else:
-            return jsonify({
-                "error": f"Failed to fetch models: {response.status_code}",
-                "message": response.text
-            }), 500
-            
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+    return jsonify({
+        "total_messages": conversation_analytics["total_messages"],
+        "session_duration": (datetime.now() - datetime.fromisoformat(conversation_analytics["session_start"])).total_seconds(),
+        "average_response_time": round(avg_response_time, 2),
+        "topics_discussed": list(set(conversation_analytics["topics_discussed"])),
+        "conversation_length": len(conversation_history)
+    })
+
+@app.route('/api/voice', methods=['POST'])
+def handle_voice():
+    """Handle voice input (placeholder for future voice features)"""
+    return jsonify({
+        "message": "Voice features coming soon!",
+        "status": "development"
+    })
 
 if __name__ == '__main__':
-    print("🚀 Starting AI Resume Assistant...")
+    print("🚀 Starting Advanced AI Resume Assistant...")
     print(f"📝 API Key Status: {'✅ Loaded' if GEMINI_API_KEY else '❌ Not configured'}")
     print("🌐 Server will be available at: http://localhost:5000")
+    print("🎯 Features: Interactive UI, Analytics, Voice Ready")
     app.run(debug=True, host='0.0.0.0', port=5000)
