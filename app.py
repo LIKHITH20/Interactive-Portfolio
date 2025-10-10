@@ -177,6 +177,10 @@ def experience():
 def about():
     return render_template('about.html')
 
+@app.route('/skills')
+def skills():
+    return render_template('skills.html')
+
 @app.route('/api/config')
 def get_config():
     """Get API configuration"""
