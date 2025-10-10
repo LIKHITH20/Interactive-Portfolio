@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Assistant</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chat-container {
+            height: calc(100vh - 200px);
+        }
+        .message-bubble {
+            animation: slideIn 0.3s ease-out;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-indicator {
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Header -->
+    <header class="gradient-bg text-white shadow-lg">
+        <div class="container mx-auto px-4 py-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <i class="fas fa-robot text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold">AI Resume Assistant</h1>
+                        <p class="text-blue-100 text-sm">Ask me anything about my qualifications and experience</p>
+                    </div>
+                </div>
+                <div class="hidden md:flex items-center space-x-4">
+                    <div class="flex items-center space-x-2 bg-white bg-opacity-20 px-3 py-1 rounded-full">
+                        <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span class="text-sm">Online</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container mx-auto px-4 py-6">
+        <!-- Chat Container -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Chat Header -->
+            <div class="bg-gradient-to-r from-primary-500 to-primary-600 px-6 py-4">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-8 h-8 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-user-tie text-white"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-white font-semibold">Professional Assistant</h2>
+                            <p class="text-blue-100 text-sm">Ready to discuss my background</p>
+                        </div>
+                    </div>
+                    <button id="clearChat" class="text-white hover:text-blue-200 transition-colors">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Messages Container -->
+            <div id="messages" class="chat-container overflow-y-auto p-6 space-y-4">
+                <!-- Welcome Message -->
+                <div class="message-bubble">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-primary-600"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
+                            <p class="text-gray-800">
+                                Hello! I'm your AI resume assistant. I can answer questions about my professional background, 
+                                skills, experience, and qualifications. Feel free to ask me anything - I'm here to help you 
+                                learn more about my capabilities and achievements.
+                            </p>
+                            <div class="mt-3 flex flex-wrap gap-2">
+                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Ask about my experience</span>
+                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Learn about my skills</span>
+                                <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Discuss my projects</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t bg-gray-50 p-4">
+                <div class="flex items-end space-x-3">
+                    <div class="flex-1">
+                        <textarea 
+                            id="messageInput" 
+                            placeholder="Ask me about my experience, skills, or any aspect of my professional background..."
+                            class="w-full px-4 py-3 border border-gray-300 rounded-2xl focus:ring-2 focus:ring-primary-500 focus:border-transparent resize-none transition-all duration-200"
+                            rows="1"
+                        ></textarea>
+                    </div>
+                    <button 
+                        id="sendButton" 
+                        class="bg-primary-600 hover:bg-primary-700 text-white px-6 py-3 rounded-2xl transition-all duration-200 transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
+                    >
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+                <div class="mt-2 text-xs text-gray-500 text-center">
+                    Press Enter to send • Shift+Enter for new line
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div class="mt-8 grid md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-brain text-blue-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Intelligent Responses</h3>
+                <p class="text-gray-600 text-sm">I provide detailed, context-aware answers based on my complete professional background.</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-shield-alt text-green-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Accurate Information</h3>
+                <p class="text-gray-600 text-sm">All responses are based solely on my resume data - no hallucinations or external information.</p>
+            </div>
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                    <i class="fas fa-mobile-alt text-purple-600 text-xl"></i>
+                </div>
+                <h3 class="text-lg font-semibold text-gray-800 mb-2">Mobile Friendly</h3>
+                <p class="text-gray-600 text-sm">Fully responsive design that works perfectly on all devices and screen sizes.</p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-2xl p-8 text-center">
+            <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+            <p class="text-gray-700 font-medium">Processing your question...</p>
+        </div>
+    </div>
+
+    <script>
+        // Configuration
+        let GEMINI_API_KEY = null;
+        const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent';
+
+        // Function to get API key from server or prompt user
+        async function getApiKey() {
+            try {
+                // Try to get API key from server first
+                const response = await fetch('/api/config');
+                const config = await response.json();
+                
+                if (config.geminiApiKey) {
+                    return config.geminiApiKey;
+                }
+            } catch (error) {
+                console.log('Server not available, using fallback method');
+            }
+            
+            // Fallback: check localStorage
+            let apiKey = localStorage.getItem('GEMINI_API_KEY');
+            
+            if (!apiKey) {
+                // Prompt user to enter API key
+                apiKey = prompt('Please enter your Gemini API key:');
+                if (apiKey) {
+                    localStorage.setItem('GEMINI_API_KEY', apiKey);
+                } else {
+                    alert('API key is required to use this application. Please refresh the page and enter your key.');
+                    return null;
+                }
+            }
+            
+            return apiKey;
+        }
+
+        // System instruction with resume data
+        const SYSTEM_INSTRUCTION = `
+You are a professional AI assistant representing a job candidate. Your role is to provide helpful, accurate, and engaging responses about the candidate's professional background, skills, and experience.
+
+IMPORTANT: You must ONLY use information provided in the resume data below. Do not make up, assume, or hallucinate any information not explicitly stated in the resume. If asked about something not covered in the resume, politely explain that you don't have that specific information and suggest asking about other aspects of the candidate's background.
+
+RESUME DATA:
+
+Likhith Shivashankar
+Melbourne VIC 3006 | Mobile: 0466 226 324 | Email: likhithshivashankar@gmail.com
+LinkedIn: https://www.linkedin.com/in/likhith-shivashankar/ | GitHub:  https://github.com/LIKHITH20
+Profile
+Results-driven Data Science graduate with over 3 years of diverse experience in AI/ML Engineering, Software Development, and Data Analytics. Proven expertise in Python, NLP, Machine Learning, and Data Processing, with hands-on experience in real-time AI solutions, Cloud Technologies, and Automation. Adept at leveraging analytical skills and technical acumen to drive data-driven insights and optimise system performance. 
+
+Key Skills
+•	Programming Languages: Python, R Programming Language, Java, Structured Query Language (SQL), C, C#.
+•	Development Tools: HTML, CSS, Microsoft Azure, MySQL, Lang Chain, GenAI.
+•	Visualisation Tools: Tableau, Power BI.
+•	Development Methodologies: Agile, NLP, Git.
+•	Soft skills: Communication, Leadership, Critical Thinking, Teamwork, Time Management, Stakeholder Engagement.
+
+Education
+RMIT University, Master of Data Science	July 2023 - June 2025
+Visvesvaraya Technological University, Bachelor of Engineering	August 2016 - September 2020
+
+Work experience
+StarPlan AI, AI/ML Engineer (Contract)	Jul 2025 – Aug 2025
+•	Designed and implemented conversational AI agents for automated interviews, enabling structured, context-aware dialogue with dynamic flow control.
+•	Integrated advanced speech recognition, synthesis, and speaker diarization models to deliver accurate, human-like interactions and high-quality transcriptions.
+•	Collaborated directly with the CEO to align technical design with business goals, co-developing a scalable solution that streamlined candidate screening and reduced interviewer workload.
+•	Enhanced system reliability through iterative testing, minimizing hallucinations and ensuring consistent, professional candidate experiences.
+Focus Bear, Machine Learning Intern	March 2025 – June 2025
+•	Led the development of LLM-powered classification systems to monitor user activity and attention levels, supporting digital interventions for individuals with ADHD in a healthcare-focused application.
+•	Developed attention scoring models using behavioural mapping and regression analysis to identify key focus patterns from app usage data, aiding early insights into cognitive engagement.
+•	Communicated weekly research findings and strategic recommendations to industry partners and academic supervisors, demonstrating leadership, adaptability, and AI/ML application in the digital health domain.
+Kois AI, AI/ML Engineer Intern	November 2024 – March 2025
+•	Built a real-time conversational loop combining speech-to-text, contextual response generation, and speech synthesis, enabling continuous, natural user interaction.
+•	Developed a dynamic audio recording system with silence detection, improving usability and ensuring accurate capture of user input.
+•	Integrated OpenAI’s API to generate contextually relevant responses, enhancing the quality and engagement of conversations.
+•	Collaborated with the CEO to align technical development with product vision, delivering a functional prototype that demonstrated the potential of conversational AI for scalable user engagement.
+Accenture India, Software Engineer	November 2020–June 2023
+•	Engineered and implemented scalable software solutions in collaboration with development and testing teams, ensuring optimal functionality and performance to meet client specifications.
+•	Modernised legacy codebases by updating them to current development standards, resulting in enhanced system functionality and maintainability.
+•	Led the migration of approximately 42TB of data utilising third-party tools such as ShareGate, Metalogix Content Matrix, and Apps4Pro Data Migration, achieving near-zero client escalations.
+•	Developed custom applications using Power Apps, automated workflows with Power Automate, and created interactive dashboards in Power BI to enhance data accessibility and support decision-making processes.
+•	Earned multiple accolades for consistently meeting project deadlines and delivering high-quality software solutions to end-users.
+
+Projects
+Bayesian CHD Risk Prediction – Framingham Dataset | Master’s Degree Coursework Research Project
+•	Developed a Bayesian logistic regression model using R to predict 10-year coronary heart disease risk, leveraging hierarchical priors and MCMC sampling (Gibbs & Metropolis-Hastings) for posterior inference.
+•	Achieved 84.8% accuracy with high recall; identified key risk factors through feature selection and posterior analysis.
+•	Tuned convergence diagnostics (ESS, MCSE, shrink factor) for model stability.
+•	Led a 3-member team through structured research planning and iterative model refinement.
+•	Tools: R, Bayesian Inference, MCMC, Feature Selection, Model Calibration.
+Sachin Tendulkar’s Cricket Journey – Power BI Dashboard | Data Visualization Project
+•	Cleaned and transformed raw cricket statistics using Power BI and DAX to build interactive dashboards narrating career milestones.
+•	Applied data storytelling techniques to convert complex metrics into intuitive visual narratives for performance reporting.
+•	Tools: Power BI, DAX, Excel, Data Cleaning, Business Intelligence.
+Certifications
+•	Microsoft 365 Fundamentals (MS-900)
+•	Microsoft Power Platform Fundamentals (PL-900)
+•	Microsoft Azure Fundamental (AZ-900)
+•	Microsoft Security, Compliance, and Identity Fundamentals (SC-900)
+VISA Details
+•	Visa Status: Temporary Graduate visa (subclass 485)
+•	Work Rights: Unrestricted
+•	Visa Expiry: 19/08/2028
+References
+Avishek Sengupta, Associate Manager, Accenture India, email: avishek.sengupta@accenture.com, tel: (+91) 8585 019 188
+Rui Liu, Co-Founder, Kois AI, email: ruiliu@kois.ai , tel: +61 413678116
+Jeremy Nagel, Founder, Focus Bear, email: jeremy@focusbear.io , tel: +61 414885787
+Khushboo Patel, Customer Service Manager, Coles Group, email: khushboop1911@gmail.com , tel: +61 406087976
+
+
+
+PERSONALITY:
+- Be professional, friendly, and engaging
+- Use "I" when referring to the candidate (e.g., "I have experience in...")
+- Be specific and detailed when discussing qualifications
+- Show enthusiasm about achievements and skills
+- Ask clarifying questions if needed to provide better answers
+- Keep responses concise but informative
+
+RESPONSE GUIDELINES:
+- Always stay within the bounds of the provided resume data
+- If asked about something not in the resume, say "I don't have that specific information in my background, but I'd be happy to discuss [related topic from resume]"
+- Focus on achievements, skills, and experiences that demonstrate value
+- Use professional but conversational language
+- Provide examples when possible
+        `;
+
+        // DOM Elements
+        const messagesContainer = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const clearChatButton = document.getElementById('clearChat');
+        const loadingOverlay = document.getElementById('loadingOverlay');
+
+        // State
+        let conversationHistory = [];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Load API key first
+            GEMINI_API_KEY = await getApiKey();
+            if (!GEMINI_API_KEY) {
+                console.error('No API key available');
+                return;
+            }
+            
+            setupEventListeners();
+            adjustTextareaHeight();
+        });
+
+        function setupEventListeners() {
+            sendButton.addEventListener('click', sendMessage);
+            clearChatButton.addEventListener('click', clearChat);
+            
+            messageInput.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendMessage();
+                }
+            });
+
+            messageInput.addEventListener('input', adjustTextareaHeight);
+        }
+
+        function adjustTextareaHeight() {
+            messageInput.style.height = 'auto';
+            messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message to UI
+            addMessage(message, 'user');
+            messageInput.value = '';
+            adjustTextareaHeight();
+
+            // Show loading
+            showLoading();
+
+            try {
+                // Add to conversation history
+                conversationHistory.push({
+                    role: 'user',
+                    parts: [{ text: message }]
+                });
+
+                // Call Gemini API
+                const response = await callGeminiAPI();
+                
+                // Add AI response to UI
+                addMessage(response, 'assistant');
+                
+                // Add to conversation history
+                conversationHistory.push({
+                    role: 'model',
+                    parts: [{ text: response }]
+                });
+
+            } catch (error) {
+                console.error('Error:', error);
+                addMessage('I apologize, but I encountered an error processing your request. Please try again.', 'assistant');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        async function callGeminiAPI() {
+            const requestBody = {
+                contents: conversationHistory,
+                generationConfig: {
+                    temperature: 0.7,
+                    topK: 40,
+                    topP: 0.95,
+                    maxOutputTokens: 1024,
+                },
+                systemInstruction: {
+                    parts: [{ text: SYSTEM_INSTRUCTION }]
+                }
+            };
+
+            const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                throw new Error(`API request failed: ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.candidates[0].content.parts[0].text;
+        }
+
+        function addMessage(content, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message-bubble';
+            
+            if (sender === 'user') {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3 justify-end">
+                        <div class="bg-primary-600 text-white rounded-2xl rounded-tr-sm px-4 py-3 max-w-3xl">
+                            <p>${content}</p>
+                        </div>
+                        <div class="w-8 h-8 bg-primary-600 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-user text-white text-sm"></i>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="flex items-start space-x-3">
+                        <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <i class="fas fa-robot text-primary-600"></i>
+                        </div>
+                        <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
+                            <p class="text-gray-800 whitespace-pre-wrap">${content}</p>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            messagesContainer.appendChild(messageDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        function clearChat() {
+            if (confirm('Are you sure you want to clear the conversation?')) {
+                messagesContainer.innerHTML = `
+                    <div class="message-bubble">
+                        <div class="flex items-start space-x-3">
+                            <div class="w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-robot text-primary-600"></i>
+                            </div>
+                            <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-3xl">
+                                <p class="text-gray-800">
+                                    Hello! I'm your AI resume assistant. I can answer questions about my professional background, 
+                                    skills, experience, and qualifications. Feel free to ask me anything - I'm here to help you 
+                                    learn more about my capabilities and achievements.
+                                </p>
+                                <div class="mt-3 flex flex-wrap gap-2">
+                                    <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Ask about my experience</span>
+                                    <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Learn about my skills</span>
+                                    <span class="bg-primary-100 text-primary-700 px-3 py-1 rounded-full text-sm">Discuss my projects</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                conversationHistory = [];
+            }
+        }
+
+        function showLoading() {
+            loadingOverlay.classList.remove('hidden');
+            sendButton.disabled = true;
+            sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+        }
+
+        function hideLoading() {
+            loadingOverlay.classList.add('hidden');
+            sendButton.disabled = false;
+            sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
+        }
+    </script>
+</body>
+</html>
