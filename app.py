@@ -169,6 +169,10 @@ def clean_markdown_formatting(text):
 def index():
     return render_template('index.html')
 
+@app.route('/experience')
+def experience():
+    return render_template('experience.html')
+
 @app.route('/api/config')
 def get_config():
     """Get API configuration"""
