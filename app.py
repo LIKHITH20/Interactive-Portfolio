@@ -173,6 +173,10 @@ def index():
 def experience():
     return render_template('experience.html')
 
+@app.route('/about')
+def about():
+    return render_template('about.html')
+
 @app.route('/api/config')
 def get_config():
     """Get API configuration"""
