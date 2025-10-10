@@ -20,7 +20,7 @@ except Exception as e:
     GEMINI_API_KEY = None
 
 # Gemini API configuration
-GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent"
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent"
 
 # System instruction with resume data
 SYSTEM_INSTRUCTION = """
