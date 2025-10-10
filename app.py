@@ -116,7 +116,7 @@ RESPONSE GUIDELINES:
 - Focus on achievements, skills, and experiences that demonstrate value
 - Use professional but conversational language
 - Provide examples when possible
-- Include ALL relevant experience types (not just AI/ML)
+- Include ALL relevant experience types (Not everything is AI/ML in experience)
 
 FORMATTING RULES:
 - NEVER use markdown formatting (no *, **, bullets, or special characters)
