@@ -178,31 +178,34 @@ def clean_markdown_formatting(text):
 def classify_question(question):
     """Classify user questions into predefined categories using AI"""
     if not GEMINI_API_KEY:
+        print("No API key available for classification")
         return "Others"
     
-    classification_prompt = f"""
-    Classify the following question into ONE of these categories ONLY:
-    - Educational
-    - Experience  
-    - Skills
-    - Project
-    - Generic Question
-    - Visa Question
-    - Others
+    # Skip classification for very short messages
+    if len(question.strip()) < 3:
+        return "Generic Question"
+    
+    classification_prompt = f"""Classify this question into exactly one of these categories:
+Educational
+Experience
+Skills
+Project
+Generic Question
+Visa Question
+Others
 
-    Question: "{question}"
+Question: {question}
 
-    Return ONLY the category name, nothing else.
-    """
+Category:"""
     
     try:
         request_body = {
             "contents": [{"parts": [{"text": classification_prompt}]}],
             "generationConfig": {
-                "temperature": 0.1,
+                "temperature": 0.0,
                 "topK": 1,
-                "topP": 0.8,
-                "maxOutputTokens": 10,
+                "topP": 0.1,
+                "maxOutputTokens": 20,
             }
         }
         
@@ -216,11 +219,30 @@ def classify_question(question):
         if response.status_code == 200:
             data = response.json()
             if data.get('candidates') and data['candidates'][0].get('content'):
-                category = data['candidates'][0]['content']['parts'][0]['text'].strip()
-                # Validate category
+                raw_category = data['candidates'][0]['content']['parts'][0]['text'].strip()
+                print(f"Raw classification result: '{raw_category}'")
+                
+                # Clean and validate category
                 valid_categories = ["Educational", "Experience", "Skills", "Project", "Generic Question", "Visa Question", "Others"]
-                if category in valid_categories:
-                    return category
+                
+                # Try exact match first
+                if raw_category in valid_categories:
+                    return raw_category
+                
+                # Try case-insensitive match
+                for valid_cat in valid_categories:
+                    if raw_category.lower() == valid_cat.lower():
+                        return valid_cat
+                
+                # Try partial match
+                for valid_cat in valid_categories:
+                    if valid_cat.lower() in raw_category.lower():
+                        return valid_cat
+                
+                print(f"Could not match '{raw_category}' to any valid category")
+                return "Others"
+        else:
+            print(f"Classification API error: {response.status_code} - {response.text}")
         
         return "Others"
         
@@ -278,6 +300,11 @@ def chat():
         
         # Track analytics
         conversation_analytics["total_messages"] += 1
+        
+        # Classify the user question for analytics (only user messages)
+        question_category = classify_question(user_message)
+        conversation_analytics["question_categories"][question_category] += 1
+        print(f"User question classified as: {question_category}")
         
         # Add user message to conversation history
         conversation_history.append({
@@ -355,11 +382,6 @@ def chat():
         # Extract topics for analytics (simple keyword extraction)
         topics = extract_topics(user_message)
         conversation_analytics["topics_discussed"].extend(topics)
-        
-        # Classify the question for analytics
-        question_category = classify_question(user_message)
-        conversation_analytics["question_categories"][question_category] += 1
-        print(f"Question classified as: {question_category}")
         
         return jsonify({
             "response": ai_response,
