@@ -1,0 +1,165 @@
+from flask import Flask, render_template, jsonify, request
+from dotenv import load_dotenv
+import os
+import requests
+import json
+
+# Load environment variables from .env file
+load_dotenv()
+
+app = Flask(__name__)
+
+# --- API Clients Initialization ---
+try:
+    GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+    if not GEMINI_API_KEY or GEMINI_API_KEY == "your_gemini_api_key_here":
+        raise ValueError("GEMINI_API_KEY not properly configured in .env file")
+    print("✅ Gemini API key loaded successfully")
+except Exception as e:
+    print(f"❌ Error loading API key: {e}")
+    GEMINI_API_KEY = None
+
+# Gemini API configuration
+GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent"
+
+# System instruction with resume data
+SYSTEM_INSTRUCTION = """
+You are a professional AI assistant representing a job candidate. Your role is to provide helpful, accurate, and engaging responses about the candidate's professional background, skills, and experience.
+
+IMPORTANT: You must ONLY use information provided in the resume data below. Do not make up, assume, or hallucinate any information not explicitly stated in the resume. If asked about something not covered in the resume, politely explain that you don't have that specific information and suggest asking about other aspects of the candidate's background.
+
+RESUME DATA:
+[INSERT YOUR RESUME CONTENT HERE - Replace this placeholder with your actual resume information]
+
+PERSONALITY:
+- Be professional, friendly, and engaging
+- Use "I" when referring to the candidate (e.g., "I have experience in...")
+- Be specific and detailed when discussing qualifications
+- Show enthusiasm about achievements and skills
+- Ask clarifying questions if needed to provide better answers
+- Keep responses concise but informative
+
+RESPONSE GUIDELINES:
+- Always stay within the bounds of the provided resume data
+- If asked about something not in the resume, say "I don't have that specific information in my background, but I'd be happy to discuss [related topic from resume]"
+- Focus on achievements, skills, and experiences that demonstrate value
+- Use professional but conversational language
+- Provide examples when possible
+"""
+
+# Store conversation history
+conversation_history = []
+
+@app.route('/')
+def index():
+    return render_template('index.html')
+
+@app.route('/api/config')
+def get_config():
+    """Get API configuration"""
+    if not GEMINI_API_KEY:
+        return jsonify({
+            "error": "API key not configured",
+            "message": "Please set GEMINI_API_KEY in your .env file"
+        }), 500
+    
+    return jsonify({
+        "geminiApiKey": GEMINI_API_KEY
+    })
+
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    """Handle chat messages"""
+    if not GEMINI_API_KEY:
+        return jsonify({
+            "error": "API key not configured",
+            "message": "Please set GEMINI_API_KEY in your .env file"
+        }), 500
+    
+    try:
+        data = request.get_json()
+        user_message = data.get('message', '')
+        
+        if not user_message:
+            return jsonify({"error": "No message provided"}), 400
+        
+        # Add user message to conversation history
+        conversation_history.append({
+            "role": "user",
+            "parts": [{"text": user_message}]
+        })
+        
+        # Prepare request for Gemini API
+        request_body = {
+            "contents": conversation_history,
+            "generationConfig": {
+                "temperature": 0.7,
+                "topK": 40,
+                "topP": 0.95,
+                "maxOutputTokens": 1024,
+            },
+            "systemInstruction": {
+                "parts": [{"text": SYSTEM_INSTRUCTION}]
+            }
+        }
+        
+        # Make request to Gemini API
+        response = requests.post(
+            f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
+            headers={"Content-Type": "application/json"},
+            json=request_body,
+            timeout=30
+        )
+        
+        if response.status_code != 200:
+            return jsonify({
+                "error": f"API request failed: {response.status_code}",
+                "message": response.text
+            }), 500
+        
+        data = response.json()
+        
+        if not data.get('candidates') or not data['candidates'][0].get('content'):
+            return jsonify({
+                "error": "Invalid API response format",
+                "message": "Unexpected response from Gemini API"
+            }), 500
+        
+        ai_response = data['candidates'][0]['content']['parts'][0]['text']
+        
+        # Add AI response to conversation history
+        conversation_history.append({
+            "role": "model",
+            "parts": [{"text": ai_response}]
+        })
+        
+        return jsonify({"response": ai_response})
+        
+    except requests.exceptions.Timeout:
+        return jsonify({
+            "error": "Request timeout",
+            "message": "The request took too long to process"
+        }), 500
+    except requests.exceptions.RequestException as e:
+        return jsonify({
+            "error": "Network error",
+            "message": str(e)
+        }), 500
+    except Exception as e:
+        return jsonify({
+            "error": "Internal server error",
+            "message": str(e)
+        }), 500
+
+@app.route('/api/clear', methods=['POST'])
+def clear_chat():
+    """Clear conversation history"""
+    global conversation_history
+    conversation_history = []
+    return jsonify({"message": "Chat cleared successfully"})
+
+if __name__ == '__main__':
+    print("🚀 Starting AI Resume Assistant...")
+    print(f"📝 API Key Status: {'✅ Loaded' if GEMINI_API_KEY else '❌ Not configured'}")
+    print("🌐 Server will be available at: http://localhost:5000")
+    app.run(debug=True, host='0.0.0.0', port=5000)
