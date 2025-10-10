@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | Likhith Shivashankar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slideInUp': 'slideInUp 0.6s ease-out',
+                        'fadeIn': 'fadeIn 0.8s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .skill-bar {
+            transition: width 2s ease-in-out;
+        }
+        
+        .profile-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-yellow-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 4s;"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-user text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                            About Me
+                        </h1>
+                        <p class="text-sm text-gray-600">Likhith Shivashankar</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="bg-gradient-to-r from-blue-500 to-purple-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-purple-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-home mr-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="grid lg:grid-cols-2 gap-12 items-center">
+                    <!-- Profile Card -->
+                    <div class="profile-card rounded-3xl p-8 text-center lg:text-left">
+                        <div class="w-48 h-48 mx-auto lg:mx-0 mb-8 relative">
+                            <div class="w-full h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center text-white text-6xl font-bold">
+                                LS
+                            </div>
+                            <div class="absolute -bottom-2 -right-2 w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                                <i class="fas fa-check text-white text-xl"></i>
+                            </div>
+                        </div>
+                        <h2 class="text-4xl font-bold text-gray-800 mb-4">
+                            Likhith Shivashankar
+                        </h2>
+                        <p class="text-xl text-gray-600 mb-6">
+                            AI/ML Engineer & Software Developer
+                        </p>
+                        <p class="text-lg text-gray-700 leading-relaxed">
+                            Passionate about creating intelligent solutions that bridge the gap between 
+                            cutting-edge AI technology and real-world applications. With expertise spanning 
+                            from conversational AI to data migration, I bring a unique blend of technical 
+                            skills and business acumen to every project.
+                        </p>
+                    </div>
+
+                    <!-- Quick Stats -->
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-graduation-cap text-blue-600 text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800">Education</h3>
+                            </div>
+                            <p class="text-gray-600 mb-2"><strong>Master of Data Science</strong></p>
+                            <p class="text-gray-500">RMIT University • 2023 - 2025</p>
+                            <p class="text-gray-600 mt-2"><strong>Bachelor of Engineering</strong></p>
+                            <p class="text-gray-500">Visvesvaraya Technological University • 2016 - 2020</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-briefcase text-green-600 text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800">Experience</h3>
+                            </div>
+                            <p class="text-gray-600 mb-2"><strong>4+ Years</strong> Professional Experience</p>
+                            <p class="text-gray-500">AI/ML Engineering • Software Development • Data Migration</p>
+                        </div>
+
+                        <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                            <div class="flex items-center mb-4">
+                                <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                                    <i class="fas fa-map-marker-alt text-purple-600 text-xl"></i>
+                                </div>
+                                <h3 class="text-xl font-semibold text-gray-800">Location</h3>
+                            </div>
+                            <p class="text-gray-600">Melbourne, Australia</p>
+                            <p class="text-gray-500">Open to remote and hybrid opportunities</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Technical Skills</h2>
+                    <p class="text-xl text-gray-600">Technologies and tools I work with</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- AI/ML Skills -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-brain text-blue-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">AI/ML</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Python</span>
+                                <span class="text-blue-600 font-semibold">Expert</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">TensorFlow</span>
+                                <span class="text-blue-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">PyTorch</span>
+                                <span class="text-blue-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">OpenAI API</span>
+                                <span class="text-blue-600 font-semibold">Expert</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">NLP</span>
+                                <span class="text-blue-600 font-semibold">Advanced</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Software Development -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-code text-green-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Development</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">JavaScript</span>
+                                <span class="text-green-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">React</span>
+                                <span class="text-green-600 font-semibold">Intermediate</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Node.js</span>
+                                <span class="text-green-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Flask</span>
+                                <span class="text-green-600 font-semibold">Expert</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Git</span>
+                                <span class="text-green-600 font-semibold">Expert</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data & Cloud -->
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mr-4">
+                                <i class="fas fa-database text-purple-600 text-xl"></i>
+                            </div>
+                            <h3 class="text-xl font-semibold text-gray-800">Data & Cloud</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">SQL</span>
+                                <span class="text-purple-600 font-semibold">Expert</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Power BI</span>
+                                <span class="text-purple-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">AWS</span>
+                                <span class="text-purple-600 font-semibold">Intermediate</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">R</span>
+                                <span class="text-purple-600 font-semibold">Advanced</span>
+                            </div>
+                            <div class="flex items-center justify-between">
+                                <span class="text-gray-600">Data Migration</span>
+                                <span class="text-purple-600 font-semibold">Expert</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Personal Story Section -->
+    <section class="py-16 bg-gradient-to-r from-blue-50 to-purple-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <h2 class="text-4xl font-bold text-gray-800 mb-8">My Journey</h2>
+                <div class="bg-white rounded-3xl p-8 shadow-lg">
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        My journey began with a passion for solving complex problems through technology. 
+                        Starting as a Software Engineer at Accenture, I developed a strong foundation in 
+                        enterprise software development and data migration. This experience taught me the 
+                        importance of scalable solutions and client-focused development.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        The transition to AI/ML was driven by my fascination with how artificial intelligence 
+                        can transform industries. Through my internships at Kois AI and Focus Bear, I've 
+                        gained hands-on experience in conversational AI, natural language processing, and 
+                        healthcare applications. My current role at StarPlan AI allows me to combine my 
+                        technical expertise with business strategy.
+                    </p>
+                    <p class="text-lg text-gray-700 leading-relaxed">
+                        Pursuing my Master's in Data Science at RMIT University has deepened my understanding 
+                        of advanced statistical methods and machine learning algorithms. I'm passionate about 
+                        creating AI solutions that are not just technically sound, but also ethically responsible 
+                        and user-friendly.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interests & Values -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Interests & Values</h2>
+                    <p class="text-xl text-gray-600">What drives me professionally and personally</p>
+                </div>
+
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-lightbulb text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Innovation</h3>
+                        <p class="text-gray-600 text-sm">Always exploring new technologies and approaches to solve problems</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                        <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-users text-green-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Collaboration</h3>
+                        <p class="text-gray-600 text-sm">Believe in the power of teamwork and cross-functional partnerships</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-graduation-cap text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Learning</h3>
+                        <p class="text-gray-600 text-sm">Continuously expanding knowledge and staying current with tech trends</p>
+                    </div>
+
+                    <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                        <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <i class="fas fa-heart text-pink-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-lg font-semibold text-gray-800 mb-2">Impact</h3>
+                        <p class="text-gray-600 text-sm">Creating solutions that make a positive difference in people's lives</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl p-12 text-white">
+                    <h3 class="text-3xl font-bold mb-4">Let's Connect!</h3>
+                    <p class="text-xl mb-8 text-blue-100">
+                        Interested in learning more about my work or discussing opportunities? 
+                        I'd love to hear from you!
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="/" class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-comments mr-2"></i>
+                            Chat with My AI
+                        </a>
+                        <a href="/experience" class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300">
+                            <i class="fas fa-briefcase mr-2"></i>
+                            View Experience
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth animations on scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all cards
+            document.querySelectorAll('.hover-lift').forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
