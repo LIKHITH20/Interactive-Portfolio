@@ -212,9 +212,18 @@ def chat():
             "type": message_type
         })
         
+        # Clean conversation history for API (remove extra fields)
+        clean_conversation = []
+        for msg in conversation_history:
+            clean_msg = {
+                "role": msg["role"],
+                "parts": msg["parts"]
+            }
+            clean_conversation.append(clean_msg)
+        
         # Prepare request for Gemini API
         request_body = {
-            "contents": conversation_history,
+            "contents": clean_conversation,
             "generationConfig": {
                 "temperature": 0.7,
                 "topK": 40,
