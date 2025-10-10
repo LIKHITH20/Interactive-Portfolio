@@ -108,10 +108,45 @@ RESPONSE GUIDELINES:
 - Focus on achievements, skills, and experiences that demonstrate value
 - Use professional but conversational language
 - Provide examples when possible
+
+FORMATTING RULES:
+- NEVER use markdown formatting (no *, **, bullets, or special characters)
+- Write in plain, natural text that flows conversationally
+- Use proper paragraphs and sentences
+- Avoid lists unless specifically asked for a list format
+- Make responses sound like natural speech, not a resume or document
+- Use "I" statements to make it personal and engaging
 """
 
 # Store conversation history
 conversation_history = []
+
+def clean_markdown_formatting(text):
+    """Clean up markdown formatting to make responses more conversational"""
+    import re
+    
+    # Remove bullet points and convert to natural text
+    text = re.sub(r'^\s*[-*]\s+', '', text, flags=re.MULTILINE)
+    
+    # Remove bold formatting
+    text = re.sub(r'\*\*(.*?)\*\*', r'\1', text)
+    
+    # Remove italic formatting
+    text = re.sub(r'\*(.*?)\*', r'\1', text)
+    
+    # Remove code formatting
+    text = re.sub(r'`(.*?)`', r'\1', text)
+    
+    # Remove headers
+    text = re.sub(r'^#+\s+', '', text, flags=re.MULTILINE)
+    
+    # Clean up multiple newlines
+    text = re.sub(r'\n\s*\n\s*\n+', '\n\n', text)
+    
+    # Remove leading/trailing whitespace
+    text = text.strip()
+    
+    return text
 
 @app.route('/')
 def index():
@@ -197,6 +232,9 @@ def chat():
             }), 500
         
         ai_response = data['candidates'][0]['content']['parts'][0]['text']
+        
+        # Clean up markdown formatting for better display
+        ai_response = clean_markdown_formatting(ai_response)
         
         # Add AI response to conversation history
         conversation_history.append({
