@@ -83,6 +83,19 @@
             animation: pulse 1.5s ease-in-out infinite;
         }
         
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+            }
+            30% {
+                transform: translateY(-8px);
+            }
+        }
+        
+        .typing-dot {
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        
         .skill-bar {
             transition: width 2s ease-in-out;
         }
@@ -317,13 +330,6 @@
         </div>
     </div>
 
-    <!-- Loading Overlay -->
-    <div id="loadingOverlay" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
-        <div class="bg-white rounded-2xl p-8 text-center">
-            <div class="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
-            <p class="text-gray-700 font-medium">AI is thinking...</p>
-        </div>
-    </div>
 
     <script>
         // Global variables
@@ -335,7 +341,6 @@
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const clearChatButton = document.getElementById('clearChat');
-        const loadingOverlay = document.getElementById('loadingOverlay');
         const analyticsModal = document.getElementById('analyticsModal');
         const analyticsContent = document.getElementById('analyticsContent');
         const responseTime = document.getElementById('responseTime');
@@ -376,8 +381,8 @@
             messageInput.value = '';
             adjustTextareaHeight();
 
-            // Show loading
-            showLoading();
+            // Show typing indicator
+            showTyping();
 
             try {
                 const response = await fetch('/api/chat', {
@@ -421,7 +426,7 @@
                 
                 addMessage(errorMessage, 'assistant');
             } finally {
-                hideLoading();
+                hideTyping();
             }
         }
 
@@ -491,14 +496,41 @@
             }
         }
 
-        function showLoading() {
-            loadingOverlay.classList.remove('hidden');
+        function showTyping() {
             sendButton.disabled = true;
             sendButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            
+            // Add typing indicator to chat
+            const typingDiv = document.createElement('div');
+            typingDiv.id = 'typing-indicator';
+            typingDiv.className = 'message-bubble';
+            typingDiv.innerHTML = `
+                <div class="flex items-start space-x-4">
+                    <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div class="bg-white rounded-2xl rounded-tl-sm px-6 py-4 max-w-3xl shadow-lg">
+                        <div class="flex items-center space-x-2">
+                            <span class="text-gray-600 text-lg">AI is typing</span>
+                            <div class="flex space-x-1">
+                                <div class="w-2 h-2 bg-blue-400 rounded-full typing-dot" style="animation-delay: 0ms;"></div>
+                                <div class="w-2 h-2 bg-blue-400 rounded-full typing-dot" style="animation-delay: 200ms;"></div>
+                                <div class="w-2 h-2 bg-blue-400 rounded-full typing-dot" style="animation-delay: 400ms;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            messagesContainer.appendChild(typingDiv);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
         }
 
-        function hideLoading() {
-            loadingOverlay.classList.add('hidden');
+        function hideTyping() {
+            const typingIndicator = document.getElementById('typing-indicator');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
             sendButton.disabled = false;
             sendButton.innerHTML = '<i class="fas fa-paper-plane"></i>';
         }
