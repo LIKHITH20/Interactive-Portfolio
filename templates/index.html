@@ -541,14 +541,16 @@
                         </div>
                     </div>
                     <div class="mt-6">
-                        <h4 class="font-semibold text-gray-800 mb-3">Question Categories:</h4>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-                            ${Object.entries(data.question_categories).map(([category, count]) => 
-                                `<div class="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg text-center">
-                                    <div class="text-lg font-bold text-gray-800">${count}</div>
-                                    <div class="text-sm text-gray-600">${category}</div>
-                                </div>`
-                            ).join('')}
+                        <h4 class="font-semibold text-gray-800 mb-3">Conversation Stats:</h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg text-center">
+                                <div class="text-lg font-bold text-gray-800">${data.conversation_length}</div>
+                                <div class="text-sm text-gray-600">Messages in History</div>
+                            </div>
+                            <div class="bg-gradient-to-r from-green-50 to-blue-50 p-3 rounded-lg text-center">
+                                <div class="text-lg font-bold text-gray-800">${data.topics_discussed.length}</div>
+                                <div class="text-sm text-gray-600">Unique Topics</div>
+                            </div>
                         </div>
                     </div>
                 `;
