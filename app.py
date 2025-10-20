@@ -138,15 +138,6 @@ conversation_analytics = {
     "session_start": datetime.now().isoformat(),
     "topics_discussed": [],
     "response_times": [],
-    "question_categories": {
-        "Educational": 0,
-        "Experience": 0,
-        "Skills": 0,
-        "Project": 0,
-        "Generic Question": 0,
-        "Visa Question": 0,
-        "Others": 0
-    }
 }
 
 def clean_markdown_formatting(text):
@@ -176,80 +167,6 @@ def clean_markdown_formatting(text):
     
     return text
 
-def classify_question(question):
-    """Classify user questions into predefined categories using AI"""
-    if not GEMINI_API_KEY:
-        print("No API key available for classification")
-        return "Others"
-    
-    # Skip classification for very short messages
-    if len(question.strip()) < 3:
-        return "Generic Question"
-    
-    classification_prompt = f"""Classify this question into exactly one of these categories:
-Educational
-Experience
-Skills
-Project
-Generic Question
-Visa Question
-Others
-
-Question: {question}
-
-Category:"""
-    
-    try:
-        request_body = {
-            "contents": [{"parts": [{"text": classification_prompt}]}],
-            "generationConfig": {
-                "temperature": 0.0,
-                "topK": 1,
-                "topP": 0.1,
-                "maxOutputTokens": 20,
-            }
-        }
-        
-        response = requests.post(
-            f"{GEMINI_API_URL}?key={GEMINI_API_KEY}",
-            headers={"Content-Type": "application/json"},
-            json=request_body,
-            timeout=10
-        )
-        
-        if response.status_code == 200:
-            data = response.json()
-            if data.get('candidates') and data['candidates'][0].get('content'):
-                raw_category = data['candidates'][0]['content']['parts'][0]['text'].strip()
-                print(f"Raw classification result: '{raw_category}'")
-                
-                # Clean and validate category
-                valid_categories = ["Educational", "Experience", "Skills", "Project", "Generic Question", "Visa Question", "Others"]
-                
-                # Try exact match first
-                if raw_category in valid_categories:
-                    return raw_category
-                
-                # Try case-insensitive match
-                for valid_cat in valid_categories:
-                    if raw_category.lower() == valid_cat.lower():
-                        return valid_cat
-                
-                # Try partial match
-                for valid_cat in valid_categories:
-                    if valid_cat.lower() in raw_category.lower():
-                        return valid_cat
-                
-                print(f"Could not match '{raw_category}' to any valid category")
-                return "Others"
-        else:
-            print(f"Classification API error: {response.status_code} - {response.text}")
-        
-        return "Others"
-        
-    except Exception as e:
-        print(f"Error in question classification: {e}")
-        return "Others"
 
 @app.route('/')
 def index():
@@ -302,10 +219,6 @@ def chat():
         # Track analytics
         conversation_analytics["total_messages"] += 1
         
-        # Classify the user question for analytics (only user messages)
-        question_category = classify_question(user_message)
-        conversation_analytics["question_categories"][question_category] += 1
-        print(f"User question classified as: {question_category}")
         
         # Add user message to conversation history
         conversation_history.append({
@@ -435,15 +348,6 @@ def clear_chat():
     conversation_analytics["topics_discussed"] = []
     conversation_analytics["response_times"] = []
     conversation_analytics["session_start"] = datetime.now().isoformat()
-    conversation_analytics["question_categories"] = {
-        "Educational": 0,
-        "Experience": 0,
-        "Skills": 0,
-        "Project": 0,
-        "Generic Question": 0,
-        "Visa Question": 0,
-        "Others": 0
-    }
     return jsonify({"message": "Chat cleared successfully"})
 
 @app.route('/api/analytics')
@@ -457,7 +361,6 @@ def get_analytics():
         "average_response_time": round(avg_response_time, 2),
         "topics_discussed": list(set(conversation_analytics["topics_discussed"])),
         "conversation_length": len(conversation_history),
-        "question_categories": conversation_analytics["question_categories"]
     })
 
 @app.route('/api/voice', methods=['POST'])
