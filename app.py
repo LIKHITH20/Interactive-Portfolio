@@ -63,7 +63,7 @@ Kois AI, AI/ML Engineer Intern	November 2024 – March 2025
 •	Developed a dynamic audio recording system with silence detection, improving usability and ensuring accurate capture of user input.
 •	Integrated OpenAI’s API to generate contextually relevant responses, enhancing the quality and engagement of conversations.
 •	Collaborated with the CEO to align technical development with product vision, delivering a functional prototype that demonstrated the potential of conversational AI for scalable user engagement.
-Accenture India, Data Migration Analyst	November 2020–June 2023
+Accenture India, Software Engineer	November 2020–June 2023
 •	Engineered and implemented scalable software solutions in collaboration with development and testing teams, ensuring optimal functionality and performance to meet client specifications.
 •	Modernised legacy codebases by updating them to current development standards, resulting in enhanced system functionality and maintainability.
 •	Led the migration of approximately 42TB of data utilising third-party tools such as ShareGate, Metalogix Content Matrix, and Apps4Pro Data Migration, achieving near-zero client escalations.
