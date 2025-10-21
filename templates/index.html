@@ -201,19 +201,25 @@
                     <h3 class="text-2xl font-bold text-gray-800">Master's Degree</h3>
                     <p class="text-gray-600">Data Science</p>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 group" onclick="goToSkills()">
                     <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-code text-green-600 text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800">15+</h3>
                     <p class="text-gray-600">Technologies</p>
+                    <div class="mt-2 text-sm text-green-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to view skills
+                    </div>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
-                    <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fas fa-project-diagram text-purple-600 text-2xl"></i>
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 group" onclick="goToExperience()">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-briefcase text-blue-600 text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800">3+</h3>
                     <p class="text-gray-600">Years Experience</p>
+                    <div class="mt-2 text-sm text-blue-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to view details
+                    </div>
                 </div>
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
                     <div class="w-16 h-16 bg-pink-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -341,6 +347,10 @@
         const messageInput = document.getElementById('messageInput');
         const sendButton = document.getElementById('sendButton');
         const clearChatButton = document.getElementById('clearChat');
+
+        // Chat persistence
+        const CHAT_STORAGE_KEY = 'asklikhith_chat_history';
+        const CONVERSATION_COUNT_KEY = 'asklikhith_conversation_count';
         const analyticsModal = document.getElementById('analyticsModal');
         const analyticsContent = document.getElementById('analyticsContent');
         const responseTime = document.getElementById('responseTime');
@@ -350,6 +360,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             setupEventListeners();
             adjustTextareaHeight();
+            loadChatHistory();
             loadAnalytics();
         });
 
@@ -370,6 +381,49 @@
         function adjustTextareaHeight() {
             messageInput.style.height = 'auto';
             messageInput.style.height = Math.min(messageInput.scrollHeight, 120) + 'px';
+        }
+
+        // Chat persistence functions
+        function saveChatHistory() {
+            const messages = Array.from(messagesContainer.children).map(msg => {
+                const isUser = msg.classList.contains('user-message');
+                const content = msg.querySelector('.message-content').textContent;
+                return {
+                    role: isUser ? 'user' : 'assistant',
+                    content: content,
+                    timestamp: new Date().toISOString()
+                };
+            });
+            
+            localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messages));
+            localStorage.setItem(CONVERSATION_COUNT_KEY, conversationCount.toString());
+        }
+
+        function loadChatHistory() {
+            try {
+                const savedMessages = localStorage.getItem(CHAT_STORAGE_KEY);
+                const savedCount = localStorage.getItem(CONVERSATION_COUNT_KEY);
+                
+                if (savedMessages) {
+                    const messages = JSON.parse(savedMessages);
+                    conversationCount = parseInt(savedCount) || 0;
+                    
+                    // Clear the welcome message
+                    messagesContainer.innerHTML = '';
+                    
+                    // Restore messages
+                    messages.forEach(msg => {
+                        addMessage(msg.content, msg.role);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading chat history:', error);
+            }
+        }
+
+        function clearStoredChat() {
+            localStorage.removeItem(CHAT_STORAGE_KEY);
+            localStorage.removeItem(CONVERSATION_COUNT_KEY);
         }
 
         async function sendMessage() {
@@ -438,7 +492,7 @@
                 messageDiv.innerHTML = `
                     <div class="flex items-start space-x-4 justify-end">
                         <div class="bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-2xl rounded-tr-sm px-6 py-4 max-w-3xl shadow-lg">
-                            <p class="text-lg">${content}</p>
+                            <p class="text-lg message-content">${content}</p>
                         </div>
                         <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-user text-white"></i>
@@ -452,7 +506,7 @@
                             <i class="fas fa-robot text-white"></i>
                         </div>
                         <div class="bg-white rounded-2xl rounded-tl-sm px-6 py-4 max-w-3xl shadow-lg">
-                            <p class="text-gray-800 text-lg whitespace-pre-wrap">${content}</p>
+                            <p class="text-gray-800 text-lg whitespace-pre-wrap message-content">${content}</p>
                         </div>
                     </div>
                 `;
@@ -460,6 +514,12 @@
             
             messagesContainer.appendChild(messageDiv);
             messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            
+            // Save chat history after adding message
+            saveChatHistory();
+            
+            // Save chat history after adding message
+            saveChatHistory();
         }
 
         async function clearChat() {
@@ -489,6 +549,7 @@
                         </div>
                     `;
                     conversationCount = 0;
+                    clearStoredChat(); // Clear localStorage
                     loadAnalytics();
                 } catch (error) {
                     console.error('Error clearing chat:', error);
@@ -605,6 +666,14 @@
         function scrollToExperience() {
             // This would scroll to experience section if it existed
             scrollToChat();
+        }
+
+        function goToExperience() {
+            window.location.href = '/experience';
+        }
+
+        function goToSkills() {
+            window.location.href = '/skills';
         }
 
         // Event listeners for buttons

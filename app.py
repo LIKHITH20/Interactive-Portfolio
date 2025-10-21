@@ -96,12 +96,39 @@ Rui Liu, Co-Founder, Kois AI, email: ruiliu@kois.ai , tel: +61 413678116
 Jeremy Nagel, Founder, Focus Bear, email: jeremy@focusbear.io , tel: +61 414885787
 Khushboo Patel, Customer Service Manager, Coles Group, email: khushboop1911@gmail.com , tel: +61 406087976
 
+RECOMMENDATION LETTERS:
+
+1.
+
+I am pleased to write this letter of recommendation for Likhith Shivashankar as he embarks on his future academic pursuits. During the two years that I had the pleasure of working with him at Accenture Solutions Pvt. Ltd., I was consistently impressed by his work ethics and dedication.
+Despite being a fresher in the IT field, Likhith proved himself to be a fast learner and quickly adapted to the new technologies and skills. As part of a project with some stringent timelines, Likhith quickly became one of the most dependable team members although he was one of the least experienced resources.
+Likhith consistently demonstrated a professional demeanor with an excellent work ethic, as well as a strong commitment to achieving excellence. His commendable communication skills and team player spirit contributed to his ability to consistently achieve the targets assigned to him and deliver what was expected of him. He has always shown a diligent approach towards taking on new challenges.
+To conclude, I have observed that he is a reliable and valuable team member who has made significant contributions toward the growth of the project. So, I am confident that he will prove to be an asset for the internship program he chooses to pursue. Therefore, I highly recommend him as an exceptional candidate for your internship .
+Please do not hesitate to contact me if you need any further information.
+Genuinely,
+Avishek Sengupta
+Custom Software Engineering Associate Manager
+Accenture Solutions Private Limited, Bangalore
+
+2.
+Rui Liu - She is a Co-founder of Kois AI and founder of StarPlan AI
+To whom it may concern,
+I am pleased to provide a reference for Likhith Shivashankar for his contribution to the development of an AI-powered HR Voice Assistant at Kois AI. As part of this project, Likhith led the implementation of a real-time, conversational screening assistant powered by OpenAI’s GPT-4o model with voice output.
+This tool was designed to simulate HR interviews using natural dialogue. Likhith built the system end-to-end in Python, integrating audio recording, speech recognition, chat memory, and voice response. One of his most impressive technical achievements was implementing smart voice input handling using RMS-based silence detection, which allowed the assistant to capture speech naturally without requiring button presses or fixed durations.
+He also implemented real-time speech-to-text conversion using Google’s Web Speech API and integrated GPT-4o’s audio-preview capabilities for generating and playing AI voice responses. He handled decoding base64 audio data, managing sample rates, and using sound device and wave libraries for smooth playback - all with excellent attention to detail.
+The assistant followed a carefully defined interview flow. It asked relevant screening questions, remembered past responses, and maintained a polite, professional tone throughout. Likhith ensured this logic was embedded through prompt engineering and structured system instructions, with no repetition or off-topic replies.
+What truly stood out was his research-driven approach. He explored OpenAI documentation, tested audio handling edge cases, and tuned conversation flows to reflect human-like behaviour. The result was a voice assistant that not only functioned well technically but also delivered a smooth candidate experience.
+In summary, Likhith demonstrated strong programming skills, product thinking, and initiative throughout this project. His work formed the core of our HR automation demo and showcased how real-time voice interaction can be integrated with LLMs for practical use. I confidently recommend him for any role involving AI, software engineering, or conversational systems.
+Please feel free to contact me for further details.
+Sincerely, Rui Liu Co-founder, Kois AI
+
+
 CRITICAL INSTRUCTIONS:
 - ONLY use information explicitly provided in the RESUME DATA above
 - Do NOT make assumptions about dates, current status, or experiences not mentioned
 - IMPORTANT: The Master's degree is COMPLETED (2023-2025), NOT pursuing
 - If the resume mentions specific dates, use those exact dates
-- Include ALL types of experience mentioned (Software Engineering, AI/ML, etc.)
+- Include ALL types of experience mentioned (Data Migration, AI/ML, etc.)
 - Do NOT add information not present in the resume data
 - Always refer to the Master's degree as "completed" or "graduated", never "pursuing"
 
