@@ -201,12 +201,15 @@
                     <h3 class="text-2xl font-bold text-gray-800">Master's Degree</h3>
                     <p class="text-gray-600">Data Science</p>
                 </div>
-                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center">
+                <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 group" onclick="goToSkills()">
                     <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                         <i class="fas fa-code text-green-600 text-2xl"></i>
                     </div>
                     <h3 class="text-2xl font-bold text-gray-800">15+</h3>
                     <p class="text-gray-600">Technologies</p>
+                    <div class="mt-2 text-sm text-green-600 opacity-0 group-hover:opacity-100 transition-opacity">
+                        Click to view skills
+                    </div>
                 </div>
                 <div class="bg-white rounded-2xl p-6 shadow-lg hover-lift text-center cursor-pointer transition-all duration-300 hover:shadow-xl hover:scale-105 group" onclick="goToExperience()">
                     <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -667,6 +670,10 @@
 
         function goToExperience() {
             window.location.href = '/experience';
+        }
+
+        function goToSkills() {
+            window.location.href = '/skills';
         }
 
         // Event listeners for buttons
