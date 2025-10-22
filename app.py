@@ -324,16 +324,16 @@ def chat():
             error_detail = response.text
             print(f"Error response: {error_detail}")
             return jsonify({
-                "error": f"API request failed: {response.status_code}",
-                "message": error_detail
+                "error": "I am just an AI trying to answer from Likhith's Resume, recommendations letters and his behavioural test results knowledge base. I'll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.",
+                "message": f"API request failed: {response.status_code}"
             }), 500
         
         data = response.json()
         
         if not data.get('candidates') or not data['candidates'][0].get('content'):
             return jsonify({
-                "error": "Invalid API response format",
-                "message": "Unexpected response from Gemini API"
+                "error": "I am just an AI trying to answer from Likhith's Resume, recommendations letters and his behavioural test results knowledge base. I'll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.",
+                "message": "Invalid API response format"
             }), 500
         
         ai_response = data['candidates'][0]['content']['parts'][0]['text']
@@ -361,18 +361,18 @@ def chat():
         
     except requests.exceptions.Timeout:
         return jsonify({
-            "error": "Request timeout",
-            "message": "The request took too long to process"
+            "error": "I am just an AI trying to answer from Likhith's Resume, recommendations letters and his behavioural test results knowledge base. I'll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.",
+            "message": "Request timeout"
         }), 500
     except requests.exceptions.RequestException as e:
         return jsonify({
-            "error": "Network error",
-            "message": str(e)
+            "error": "I am just an AI trying to answer from Likhith's Resume, recommendations letters and his behavioural test results knowledge base. I'll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.",
+            "message": "Network error"
         }), 500
     except Exception as e:
         return jsonify({
-            "error": "Internal server error",
-            "message": str(e)
+            "error": "I am just an AI trying to answer from Likhith's Resume, recommendations letters and his behavioural test results knowledge base. I'll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.",
+            "message": "Unable to process request"
         }), 500
 
 def extract_topics(message):
