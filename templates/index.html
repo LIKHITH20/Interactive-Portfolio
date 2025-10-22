@@ -414,14 +414,13 @@
 
             } catch (error) {
                 console.error('Error:', error);
-                let errorMessage = 'I apologize, but I encountered an error processing your request. ';
+                let errorMessage = 'I am just an AI trying to answer from Likhith\'s Resume, recommendations letters and his behavioural test results knowledge base. I\'ll not be able to answer this specific question from any of these. But you can always reach out to Likhith (likhithshivashankar@gmail.com) to get more information on such questions.';
                 
+                // Only show technical error messages for actual technical issues
                 if (error.message.includes('API key not configured')) {
-                    errorMessage += 'The API key is not properly configured. Please check the server logs.';
+                    errorMessage = 'I apologize, but I encountered a technical error. The API key is not properly configured. Please check the server logs.';
                 } else if (error.message.includes('timeout')) {
-                    errorMessage += 'The request timed out. Please try again.';
-                } else {
-                    errorMessage += 'Please try again.';
+                    errorMessage = 'I apologize, but the request timed out. Please try again.';
                 }
                 
                 addMessage(errorMessage, 'assistant');
