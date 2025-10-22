@@ -233,6 +233,10 @@ def about():
 def skills():
     return render_template('skills.html')
 
+@app.route('/ai-ml-specialist')
+def ai_ml_specialist():
+    return render_template('ai-ml-specialist.html')
+
 @app.route('/api/config')
 def get_config():
     """Get API configuration"""
