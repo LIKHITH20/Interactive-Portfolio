@@ -237,6 +237,10 @@ def skills():
 def ai_ml_specialist():
     return render_template('ai-ml-specialist.html')
 
+@app.route('/masters-degree')
+def masters_degree():
+    return render_template('masters-degree.html')
+
 @app.route('/api/config')
 def get_config():
     """Get API configuration"""

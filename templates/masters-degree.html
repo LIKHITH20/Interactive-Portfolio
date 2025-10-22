@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master's Degree in Data Science - AskLikhith | All Questions, Zero Searching</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            900: '#1e3a8a'
+                        },
+                        accent: {
+                            500: '#8b5cf6',
+                            600: '#7c3aed'
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'slideInUp': 'slideInUp 0.6s ease-out',
+                        'fadeIn': 'fadeIn 0.8s ease-out',
+                        'bounce-slow': 'bounce 2s infinite',
+                        'gradient': 'gradient 15s ease infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .gradient-bg {
+            background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .hover-lift {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .hover-lift:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        
+        .degree-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+        }
+        
+        .course-card {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.8));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .grade-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            font-weight: bold;
+        }
+        
+        .hd-grade {
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            color: white;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-10">
+        <div class="absolute inset-0 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50"></div>
+        <div class="absolute top-0 left-0 w-full h-full">
+            <div class="absolute top-20 left-10 w-72 h-72 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+            <div class="absolute top-40 right-10 w-72 h-72 bg-indigo-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 2s;"></div>
+            <div class="absolute -bottom-8 left-20 w-72 h-72 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style="animation-delay: 4s;"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="relative z-10 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-12 h-12 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-graduation-cap text-white text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 bg-clip-text text-transparent">
+                            AskLikhith
+                        </h1>
+                        <p class="text-sm text-gray-600">All Questions, Zero Searching</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="/" class="bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-6 py-2 rounded-xl font-semibold hover:from-blue-600 hover:to-indigo-700 transition-all duration-300 transform hover:scale-105">
+                        <i class="fas fa-home mr-2"></i>
+                        Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="relative py-20">
+        <div class="container mx-auto px-4 text-center">
+            <div class="max-w-4xl mx-auto">
+                <div class="mb-8">
+                    <div class="w-24 h-24 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-full flex items-center justify-center mx-auto mb-6 degree-glow">
+                        <i class="fas fa-graduation-cap text-white text-4xl"></i>
+                    </div>
+                </div>
+                <h1 class="text-5xl md:text-7xl font-bold mb-6">
+                    <span class="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                        Master's Degree
+                    </span>
+                </h1>
+                <h2 class="text-2xl md:text-3xl font-semibold text-gray-700 mb-4">Data Science</h2>
+                <div class="bg-gradient-to-r from-blue-100 to-indigo-100 rounded-2xl p-8 mb-8">
+                    <h3 class="text-xl font-bold text-gray-800 mb-4">Program Overview</h3>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-4">
+                        My Master of Data Science degree from <span class="font-bold text-blue-600">RMIT University</span> provides the theoretical depth and computational expertise required to engineer intelligent solutions. The program was successfully completed in <span class="font-bold text-indigo-600">July 2025</span>.
+                    </p>
+                    <div class="grid md:grid-cols-2 gap-6 mt-6">
+                        <div class="bg-white rounded-xl p-4">
+                            <div class="text-3xl font-bold text-blue-600 mb-2">3.6</div>
+                            <div class="text-gray-600">Cumulative GPA</div>
+                        </div>
+                        <div class="bg-white rounded-xl p-4">
+                            <div class="text-3xl font-bold text-indigo-600 mb-2">HD</div>
+                            <div class="text-gray-600">High Distinctions</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Core Competencies -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Core Competencies</h2>
+                    <div class="bg-gradient-to-r from-indigo-50 to-blue-50 rounded-2xl p-6 max-w-4xl mx-auto">
+                        <p class="text-lg text-gray-700">
+                            The curriculum focused heavily on the advanced statistical, programming, and machine learning principles that underpin scalable AI/ML systems.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- High-Impact Coursework -->
+    <section class="py-16 bg-gradient-to-r from-blue-50 to-indigo-50">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">High-Impact Coursework</h2>
+                    <p class="text-xl text-gray-600 mb-6">AI & ML Focus</p>
+                    <div class="bg-white rounded-2xl p-6 max-w-4xl mx-auto">
+                        <p class="text-lg text-gray-700">
+                            This coursework directly informs my expertise as an AI/ML Specialist, demonstrating proficiency in both model development and the production-level software required to run them.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    <!-- Course 1 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Data Science Postgraduate Project (COSC2667)</h3>
+                                <p class="text-gray-600 mb-3">Research & Applied AI: Highest possible mark in a final, complex 24-unit capstone project.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">100</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 2 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Practical Data Science with Python (COSC2670)</h3>
+                                <p class="text-gray-600 mb-3">Production Programming: Advanced application of Python for real-world data science tasks.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">97</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 3 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Database Concepts (ISYS1055)</h3>
+                                <p class="text-gray-600 mb-3">Data Architecture: Fundamental knowledge for structuring and querying large datasets.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">94</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 4 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Programming Fundamentals (COSC2531)</h3>
+                                <p class="text-gray-600 mb-3">Coding Rigor: Establishing strong, efficient programming principles.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">91</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 5 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Machine Learning (MATH2319)</h3>
+                                <p class="text-gray-600 mb-3">Model Mastery: Core theory and implementation of advanced ML algorithms.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">87</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 6 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Advanced Programming for Data Science (COSC2820)</h3>
+                                <p class="text-gray-600 mb-3">Engineering Scalability: Implementing efficient code for large-scale data systems.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">87</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 7 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Big Data Processing (COSC2637)</h3>
+                                <p class="text-gray-600 mb-3">System Optimization: Techniques for handling and processing massive volumes of data.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">85</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 8 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Applied Bayesian Statistics (MATH2269)</h3>
+                                <p class="text-gray-600 mb-3">Probabilistic Modeling: Advanced statistical techniques for prediction and inference.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">85</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course 9 -->
+                    <div class="course-card rounded-2xl p-6 hover-lift">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div class="flex-1">
+                                <h3 class="text-xl font-bold text-gray-800 mb-2">Time Series Analysis (MATH1318)</h3>
+                                <p class="text-gray-600 mb-3">Forecasting: Specialized methods for sequence-dependent data used in business and finance.</p>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <span class="text-2xl font-bold text-gray-800">80</span>
+                                <span class="hd-grade px-4 py-2 rounded-full text-sm">HD</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skill Development -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-6xl mx-auto">
+                <div class="text-center mb-12">
+                    <h2 class="text-4xl font-bold text-gray-800 mb-4">Skill Development</h2>
+                    <p class="text-xl text-gray-600 mb-8">The Master's program provided rigorous training in essential tools and concepts</p>
+                </div>
+
+                <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Statistical Deep Dive -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-chart-bar text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Statistical Deep Dive</h3>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">
+                            Mastery of complex statistical concepts including Bayesian Inference and MCMC sampling.
+                        </p>
+                    </div>
+
+                    <!-- Programming for Scale -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-code text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Programming for Scale</h3>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">
+                            Expertise in programming languages like Python and R for statistical modeling and engineering.
+                        </p>
+                    </div>
+
+                    <!-- Core Engineering -->
+                    <div class="bg-white rounded-2xl p-8 shadow-lg hover-lift">
+                        <div class="flex items-center mb-6">
+                            <div class="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-600 rounded-xl flex items-center justify-center mr-4">
+                                <i class="fas fa-cogs text-white text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-800">Core Engineering</h3>
+                        </div>
+                        <p class="text-gray-700 leading-relaxed">
+                            Foundational knowledge in Database Concepts, Data Wrangling, and Big Data Processing.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="py-16">
+        <div class="container mx-auto px-4">
+            <div class="max-w-4xl mx-auto text-center">
+                <div class="bg-gradient-to-r from-blue-500 to-indigo-600 rounded-3xl p-12 text-white">
+                    <h3 class="text-3xl font-bold mb-4">Ready to Learn More?</h3>
+                    <p class="text-xl mb-8 text-blue-100">
+                        Explore my AI/ML expertise and professional experience to see how this academic foundation translates into real-world solutions.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                        <a href="/ai-ml-specialist" class="bg-white text-blue-600 px-8 py-4 rounded-xl font-semibold hover:bg-gray-100 transition-all duration-300 transform hover:scale-105">
+                            <i class="fas fa-brain mr-2"></i>
+                            AI/ML Expertise
+                        </a>
+                        <a href="/experience" class="border-2 border-white text-white px-8 py-4 rounded-xl font-semibold hover:bg-white hover:text-blue-600 transition-all duration-300">
+                            <i class="fas fa-briefcase mr-2"></i>
+                            Professional Experience
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Add smooth scrolling and animations
+        document.addEventListener('DOMContentLoaded', function() {
+            // Animate elements on scroll
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+
+            // Observe all sections
+            document.querySelectorAll('section').forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
