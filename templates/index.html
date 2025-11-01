@@ -250,9 +250,6 @@
                                 </div>
                             </div>
                             <div class="flex items-center space-x-4">
-                                <button id="voiceButton" class="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white/10">
-                                    <i class="fas fa-microphone text-xl"></i>
-                                </button>
                                 <button id="analyticsButton" class="text-white hover:text-blue-200 transition-colors p-2 rounded-full hover:bg-white/10">
                                     <i class="fas fa-chart-bar text-xl"></i>
                                 </button>
@@ -560,27 +557,6 @@
                         <div class="bg-pink-50 p-4 rounded-lg">
                             <h4 class="font-semibold text-pink-800">Topics Discussed</h4>
                             <p class="text-2xl font-bold text-pink-600">${data.topics_discussed.length}</p>
-                        </div>
-                    </div>
-                    <div class="mt-4">
-                        <h4 class="font-semibold text-gray-800 mb-2">Topics Covered:</h4>
-                        <div class="flex flex-wrap gap-2">
-                            ${data.topics_discussed.map(topic => 
-                                `<span class="bg-gray-100 text-gray-700 px-3 py-1 rounded-full text-sm">${topic}</span>`
-                            ).join('')}
-                        </div>
-                    </div>
-                    <div class="mt-6">
-                        <h4 class="font-semibold text-gray-800 mb-3">Conversation Stats:</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                            <div class="bg-gradient-to-r from-blue-50 to-purple-50 p-3 rounded-lg text-center">
-                                <div class="text-lg font-bold text-gray-800">${data.conversation_length}</div>
-                                <div class="text-sm text-gray-600">Messages in History</div>
-                            </div>
-                            <div class="bg-gradient-to-r from-green-50 to-blue-50 p-3 rounded-lg text-center">
-                                <div class="text-lg font-bold text-gray-800">${data.topics_discussed.length}</div>
-                                <div class="text-sm text-gray-600">Unique Topics</div>
-                            </div>
                         </div>
                     </div>
                 `;
